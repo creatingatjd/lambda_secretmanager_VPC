@@ -1,0 +1,1 @@
+# lambda_secretmanager_VPC
