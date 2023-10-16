@@ -26,9 +26,8 @@ module "aws_lambda" {
   secretname                  = var.secretname
   secretpolicy                = module.secret_manager.secretpolicy
   depends_on                  = [module.secret_manager]
-  subnet1_cidr                = module.vpc.subnet1_cidr
-  subnet2_cidr                = module.vpc.subnet2_cidr
-  sgname                      = module.vpc.sgname
+  subnet1_cidr                = [module.vpc.subnet_ids]
+  sgname                      = [module.vpc.sgname]
 }
 
 module "secret_manager" {
@@ -39,12 +38,7 @@ module "secret_manager" {
 
 module "vpc" {
   source       = "./module/vpc"
-  vpc_cidr     = var.vpc_cidr
-  subnet1_cidr = var.subnet1_cidr
-  subnet2_cidr = var.subnet2_cidr
-  rt_cidr      = var.rt_cidr
-  sgname       = var.sgname
-  aws_region = var.aws_region
+
 }
 
 
