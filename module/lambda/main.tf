@@ -16,12 +16,12 @@ resource "aws_iam_role" "lambda_role" {
   })
 
   tags = {
-    tag-key = "tag-value"
+    tag-key = "tag-value1"
   }
 }
 
 data "aws_iam_policy" "example" {
-  name = "secret-policy"
+  name = var.secretpolicy
 }
 
 #creating iam policy
@@ -34,15 +34,9 @@ resource "aws_iam_policy" "lambda_policy" {
     Statement = [
       {
         Action = [
-<<<<<<< HEAD
           "lambda:*",
           "ec2:CreateNetworkInterface",
           "ec2:DescribeNetworkInterfaces",
-=======
-          "lambda:*"
-          "ec2:CreateNetworkInterface",
-          "ec2:DescribeNetworkInterface",
->>>>>>> 2459bfbce161d3bae84057492d58642fb4376a07
           "ec2:DeleteNetworkInterface"
         ]
         Effect   = "Allow"
@@ -58,7 +52,11 @@ resource "aws_iam_role_policy_attachment" "lambda_policy_role_attachment1" {
 }
 resource "aws_iam_role_policy_attachment" "lambda_policy_role_attachment2" {
   role       = aws_iam_role.lambda_role.name
-  policy_arn = var.secretpolicy
+  policy_arn = data.aws_iam_policy.example.arn
+}
+resource "aws_iam_role_policy_attachment" "iam_role_policy_attachment_lambda_vpc_access_execution" {
+  role       = aws_iam_role.lambda_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
 
 #zipping python file 
@@ -81,12 +79,11 @@ resource "aws_lambda_function" "lambda_function" {
   timeout = 10
   depends_on = [aws_iam_role_policy_attachment.lambda_policy_role_attachment1, aws_iam_role_policy_attachment.lambda_policy_role_attachment2 ]
   vpc_config {
-   subnet_ids         = [var.subnet1_cidr, var.subnet2_cidr] # Use the subnet ID(s) you defined
-   security_group_ids = [var.sgname] # Specify your security group(s)
+   subnet_ids         = [var.subnet_ids] # Use the subnet ID(s) you defined
+   security_group_ids = [var.sgname]1cify your security group(s)
   }
    environment {
     variables = {
       SECRET_NAME= var.secretname
-    }
   }
 }
