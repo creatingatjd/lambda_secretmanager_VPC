@@ -17,28 +17,57 @@ provider "aws" {
   # Other optional configuration settings can be added here if needed
 }
 
+terraform {
+  required_version = ">= 1.0.0"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "5.10.0" # Use an appropriate version constraint
+
+    }
+  }
+}
+provider "aws" {
+  region     = var.aws_region
+  access_key = var.aws_access_key
+  secret_key = var.aws_secret_key
+
+  # Replace this with your desired AWS region
+  # Other optional configuration settings can be added here if needed
+}
 module "aws_lambda" {
-  source                      = "./module/lambda"
-  aws_iam_role                = var.aws_iam_role
-  aws_iam_policy              = var.aws_iam_policy
-  aws_lambda_function         = var.aws_lambda_function
-  aws_lambda_function_handler = var.aws_lambda_function_handler
-  secretname                  = var.secretname
-  secretpolicy                = module.secret_manager.secretpolicy
-  depends_on                  = [module.secret_manager]
-  subnet1_cidr                = [module.vpc.subnet_ids]
-  sgname                      = [module.vpc.sgname]
+  source                  = "./Modules/lambda"
+  lambda_role             = var.lambda_role
+  lambda_policy           = var.lambda_policy
+  lambda_function         = var.lambda_function
+  lambda_function_handler = var.lambda_function_handler
+  secret_name             = module.secret_manager.secret_name
+  secret_policy           = var.secret_policy
+  security_group_id       = module.vpc.security_group_id
+  demo-subnet1            = module.vpc.subnet1-id
+  # demo-subnet2            = module.vpc.subnet2-id
+  depends_on              = [module.secret_manager, module.vpc]
 }
 
 module "secret_manager" {
-  source       = "./module/secretmanager"
-  secretname   = var.secretname
-  secretpolicy = var.secretpolicy
+  source      = "./Modules/secretmanager"
+  secret_name = var.secret_name
 }
 
 module "vpc" {
-  source       = "./module/vpc"
+  source       = "./Modules/vpc"
+  demo-subnet1 = var.demo-subnet1
+  # demo-subnet2 = var.demo-subnet2
 
+  
 }
+
+
+
+
+
+
+
+
 
 
