@@ -79,8 +79,8 @@ resource "aws_lambda_function" "lambda_function" {
   timeout = 10
   depends_on = [aws_iam_role_policy_attachment.lambda_policy_role_attachment1, aws_iam_role_policy_attachment.lambda_policy_role_attachment2 ]
   vpc_config {
-   subnet_ids         = [var.subnet_ids] # Use the subnet ID(s) you defined
-   security_group_ids = [var.sgname]1cify your security group(s)
+   subnet_ids         = [var.demo-subnet1] # Use the subnet ID(s) you defined
+   security_group_ids = [var.security_group_id]1cify your security group(s)
   }
    environment {
     variables = {
