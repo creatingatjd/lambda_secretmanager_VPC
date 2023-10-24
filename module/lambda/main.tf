@@ -77,7 +77,7 @@ resource "aws_lambda_function" "lambda_function" {
   source_code_hash = data.archive_file.lambda_archive_file.output_base64sha256
   runtime = "python3.9"
   timeout = 10
-  depends_on = [aws_iam_role_policy_attachment.lambda_policy_role_attachment1, aws_iam_role_policy_attachment.lambda_policy_role_attachment2 ]
+  depends_on = [aws_iam_role_policy_attachment.lambda_policy_role_attachment1, aws_iam_role_policy_attachment.lambda_policy_role_attachment2, aws_iam_role_policy_attachment.iam_role_policy_attachment_lambda_vpc_access_execution ]
   vpc_config {
    subnet_ids         = [var.demo-subnet1] # Use the subnet ID(s) you defined
    security_group_ids = [var.security_group_id]1cify your security group(s)
