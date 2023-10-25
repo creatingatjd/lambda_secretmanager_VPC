@@ -1,8 +1,14 @@
-output "subnet_ids" {
-    description = "security group id"
-    value = [aws_subnet.subnet1_public.id, aws_subnet.subnet2_public.id]
+# public subnet az1 id
+output "subnet1-id" {
+  value = aws_subnet.demo-subnet1.id
 }
-output "sg" {
-    description = "security group id"
-    value = aws_default_security_group.default_security_group.id
+
+#public subnet az2 id
+output "subnet2-id" {
+  value = aws_subnet.demo-subnet2.id
+}
+
+#private subnet in az2 id
+output "security_group_id" {
+  value = aws_security_group.demo-sg.id
 }
