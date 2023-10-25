@@ -44,8 +44,8 @@ module "aws_lambda" {
   secret_name             = module.secret_manager.secret_name
   secret_policy           = var.secret_policy
   security_group_id       = module.vpc.security_group_id
-  demo-subnet1            = module.vpc.subnet1-id
-  # demo-subnet2            = module.vpc.subnet2-id
+  subnet1-id              = module.vpc.subnet1-id
+  subnet2-id              = module.vpc.subnet2-id
   depends_on              = [module.secret_manager, module.vpc]
 }
 
