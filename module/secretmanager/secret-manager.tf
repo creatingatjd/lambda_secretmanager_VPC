@@ -1,6 +1,7 @@
 resource "aws_secretsmanager_secret" "mongodb_secret" {
   name        = var.secretname # Replace with your desired secret name
   description = "MongoDB credentials"
+  recovery_window_in_days = 0
 }
 
 resource "aws_secretsmanager_secret_version" "mongodb_secret_version" {
